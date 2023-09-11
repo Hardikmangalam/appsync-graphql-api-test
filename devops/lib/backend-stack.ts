@@ -29,16 +29,6 @@ export class BackendStack extends Stack {
 
   constructor(app: App, id: string, props: BackendStackProps) {
     super(app, id, props);
-    // const vpc = ec2.Vpc.fromVpcAttributes(this, "MyVpc", {
-    //   vpcId: "your-vpc-id",
-    //   availabilityZones: ["us-east-1a", "us-east-1b", "us-east-1c"], // Replace with your AZs
-    //   publicSubnetIds: [
-    //     "subnet-044713d262f322cd7",
-    //     "subnet-01a52e0d31abee1ec",
-    //     "subnet-03067edc8ec4d5984",
-    //   ],
-    // });
-    // Appsync + Lambda
     this.lambdaCode = lambda.Code.fromCfnParameters();
     const secretsManagerPolicy = new iam.PolicyStatement({
       actions: ["secretsmanager:GetSecretValue"],

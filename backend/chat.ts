@@ -1,11 +1,9 @@
-/**
- * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
- */
-const AWS = require('aws-sdk');
+import { APIGatewayProxyHandler } from 'aws-lambda';
+import * as AWS from 'aws-sdk';
+import * as moment from 'moment';
 
-const regionArr = ['us-east-1', 'us-east-2'];
+const regionArr: string[] = ['us-east-1', 'us-east-2'];
 
-const moment = require('moment');
 const DynamoDB = new AWS.DynamoDB({
     apiVersion: '2012-08-10',
     region: regionArr[Math.floor(Math.random() * regionArr.length)],
@@ -13,24 +11,23 @@ const DynamoDB = new AWS.DynamoDB({
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-const { responseWrapper, verifyJWT } = require('/opt/utils');
-const { _values } = require('/opt/constants');
-const { closeConnection } = require('/opt/connectionClose');
+import { responseWrapper, verifyJWT } from '/opt/utils';
+import { _values } from '/opt/constants';
+import { closeConnection } from '/opt/connectionClose';
 
-/// Connection using node-postgres / pg
+import { Pool } from 'pg';
 
-var { Pool } = require('pg');
-let secretsManager = new AWS.SecretsManager();
-let SM_EXAMPLE_DATABASE_CREDENTIALS = 'evsdevdb_secret';
-// let URL_RDS_PROXY = 'evsdbproxy.proxy-clom6lg25ujp.us-east-1.rds.amazonaws.com';
+const secretsManager = new AWS.SecretsManager();
+const SM_EXAMPLE_DATABASE_CREDENTIALS = 'evsdevdb_secret';
 
-var pool = null;
+let pool: Pool | null = null;
+
 const pgConnection = async () => {
     try {
-        let sm = await secretsManager
+        const sm = await secretsManager
             .getSecretValue({ SecretId: SM_EXAMPLE_DATABASE_CREDENTIALS })
             .promise();
-        let credentials = JSON.parse(sm.SecretString);
+        const credentials = JSON.parse(sm.SecretString);
 
         pool = new Pool({
             user: credentials.username,
@@ -51,15 +48,14 @@ const pgConnection = async () => {
     }
 };
 
-exports.handler = async (event, context) => {
+export const handler: APIGatewayProxyHandler = async (event, context) => {
     context.callbackWaitsForEmptyEventLoop = false;
 
     try {
-        // console.log(`EVENT: ${JSON.stringify(event)}`);
-        const fieldName = event.fieldName;
+        const fieldName: string = event.fieldName;
         event.body = event.arguments;
         event.authorization = event.request.headers['x-auth-provider'];
-        console.log('fieldName:::>>', fieldName);
+
         switch (fieldName) {
             case 'quickAnswer':
                 return quickAnswer(event);
@@ -70,13 +66,8 @@ exports.handler = async (event, context) => {
             default:
                 return {
                     statusCode: 400,
-                    //  Uncomment below to enable CORS requests
-                    //  headers: {
-                    //      "Access-Control-Allow-Origin": "*",
-                    //      "Access-Control-Allow-Headers": "*"
-                    //  },
                     body: {
-                        succes: false,
+                        success: false,
                         message: 'Unreachable query / mutation',
                     },
                 };
@@ -92,14 +83,15 @@ exports.handler = async (event, context) => {
     }
 };
 
-const quickAnswer = async event => {
-    let responseData;
+const quickAnswer = async (event: any) => {
+    let responseData: any;
     try {
         const { authorization } = event;
         if (!authorization) throw new Error('Invalid Token');
 
         const verifiedTokenInfo = await verifyJWT(authorization);
         if (!verifiedTokenInfo) throw new Error('Invalid Token');
+
         let {
             meeting_id,
             question_id,
@@ -118,10 +110,10 @@ const quickAnswer = async event => {
         const randomSuffix = Math.floor(Math.random() * 1000000);
 
         const uniquePartitionKey = `${currentTimestamp}${randomSuffix}`;
-        let meetingGroupIdsForDynamo = meetingGroupIds.map(obj => {
+        let meetingGroupIdsForDynamo = meetingGroupIds.map((obj: number) => {
             return { N: obj.toString() };
         });
-        let meetingGroupIndexForDynamo = meetingGroupIndex.map(obj => {
+        let meetingGroupIndexForDynamo = meetingGroupIndex.map((obj: number) => {
             return { N: obj.toString() };
         });
 
@@ -154,19 +146,16 @@ const quickAnswer = async event => {
             TableName: TABLE_NAME,
             IndexName: 'question_id-index',
             KeyConditionExpression: 'question_id = :qid',
-            // FilterExpression: 'contains(meetingGroups, :meetingGroupValue)',
             ExpressionAttributeValues: {
                 ':qid': `${question_id}`,
-                // ':meetingGroupValue': 1
             },
         };
 
         let getData = await docClient.query(getParams).promise();
-        console.log('getData>>>', JSON.stringify(getData.Items));
 
-        let userCount = new Set();
+        let userCount = new Set<string>();
         user_id.includes('anon') ? userCount.add(user_id) : '';
-        getData.Items.forEach(item => {
+        getData.Items.forEach((item: any) => {
             if (item.user_id.includes('anon')) {
                 userCount.add(item.user_id);
             }
@@ -211,8 +200,8 @@ const quickAnswer = async event => {
     }
 };
 
-const sendPublicChat = async event => {
-    let responseData;
+const sendPublicChat = async (event: any) => {
+    let responseData: any;
     try {
         const { authorization } = event;
         if (!authorization) throw new Error('Invalid Token');
@@ -367,8 +356,8 @@ const sendPublicChat = async event => {
     }
 };
 
-const getPublicChat = async event => {
-    let responseData;
+const getPublicChat = async (event: any) => {
+    let responseData: any;
     try {
         const { authorization } = event;
         if (!authorization) throw new Error('Invalid Token');
@@ -396,7 +385,7 @@ const getPublicChat = async event => {
         const TABLE_NAME = 'PublicChatTable';
 
         const chatSectionObj = _values.ALLOWED_PUBLIC_CHAT_SECTION_BY_ROLE.find(
-            e => e.role_id === role_id,
+            (e: any) => e.role_id === role_id,
         );
 
         for (const typeName of chatSectionObj.chat_section) {
@@ -412,9 +401,6 @@ const getPublicChat = async event => {
                 .promise();
 
             if (existingData.hasOwnProperty('Item')) {
-                {
-                    console.log('existingData[>>>', existingData['Item']);
-                }
                 if (existingData['Item'].id.includes('HOSTS-MODERATORS')) {
                     if (role_id === _values.ROLES.HOST) {
                         returnData.push({ ...existingData['Item'], typeId: 3 });
