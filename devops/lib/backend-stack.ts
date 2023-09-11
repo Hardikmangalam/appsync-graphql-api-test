@@ -42,7 +42,7 @@ export class BackendStack extends Stack {
       ],
     });
 
-    const api = new appsync.GraphqlApi(this, "Api", {
+    const api = new appsync.GraphqlApi(this, "ApiEvsHostCms", {
       name: `${props.appName}-api-${props.stageName}`,
       schema: appsync.SchemaFile.fromAsset(path.join(__dirname, "../../schema.graphql")),
       authorizationConfig: {
