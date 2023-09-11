@@ -105,15 +105,15 @@ export class BackendStack extends Stack {
     //   memorySize: 128,
     //   role: lambdaRole,
     // });
-    const meetingsLamda = new lambda.Function(this, "MeetingsFunction", {
-      functionName: `meetings-Function-${props.stageName}`,
-      description: `${props.appName} lambda function`,
-      runtime: lambda.Runtime.NODEJS_18_X,
-      handler: "meetings.handler",
-      code: this.lambdaCode,
-      memorySize: 128,
-      role: lambdaRole,
-    });
+    // const meetingsLamda = new lambda.Function(this, "MeetingsFunction", {
+    //   functionName: `meetings-Function-${props.stageName}`,
+    //   description: `${props.appName} lambda function`,
+    //   runtime: lambda.Runtime.NODEJS_18_X,
+    //   handler: "meetings.handler",
+    //   code: this.lambdaCode,
+    //   memorySize: 128,
+    //   role: lambdaRole,
+    // });
     // const questionLamda = new lambda.Function(this, "questionFunction", {
     //   functionName: `question-Function-${props.stageName}`,
     //   description: `${props.appName} lambda function`,
@@ -151,25 +151,25 @@ export class BackendStack extends Stack {
     //   role: lambdaRole,
     // });
 
-    const lambdaDsMeeting = api.addLambdaDataSource("lambdaDatasourceMeeting", meetingsLamda);
+    // const lambdaDsMeeting = api.addLambdaDataSource("lambdaDatasourceMeeting", meetingsLamda);
     // const lambdaDsChat = api.addLambdaDataSource("lambdaDatasourceChat", chatLamda);
     // const lambdaDsQuestion = api.addLambdaDataSource("lambdaDatasourceQuestion", questionLamda);
     // const lambdaDsScreen = api.addLambdaDataSource("lambdaDatasourceScreen", screenLamda);
     // const lambdaDsTemplate = api.addLambdaDataSource("lambdaDatasourceTemplate", templateLamda);
     // const lambdaDsUsers = api.addLambdaDataSource("lambdaDatasourceUsers", usersLamda);
 
-    lambdaDsMeeting.createResolver("checkValidMeeting", {
-      typeName: "Query",
-      fieldName: "checkValidMeeting",
-    })
-    lambdaDsMeeting.createResolver("checkValidMeetingPostgres", {
-      typeName: "Query",
-      fieldName: "checkValidMeetingPostgres",
-    })
-    lambdaDsMeeting.createResolver("listAvailableNumber", {
-      typeName: "Query",
-      fieldName: "listAvailableNumber",
-    })
+    // lambdaDsMeeting.createResolver("checkValidMeeting", {
+    //   typeName: "Query",
+    //   fieldName: "checkValidMeeting",
+    // })
+    // lambdaDsMeeting.createResolver("checkValidMeetingPostgres", {
+    //   typeName: "Query",
+    //   fieldName: "checkValidMeetingPostgres",
+    // })
+    // lambdaDsMeeting.createResolver("listAvailableNumber", {
+    //   typeName: "Query",
+    //   fieldName: "listAvailableNumber",
+    // })
 
 
 
