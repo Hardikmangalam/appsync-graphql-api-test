@@ -203,13 +203,13 @@
    "UpdateReplacePolicy": "Retain",
    "DeletionPolicy": "Retain",
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/ArtifactKey/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/ArtifactKey/Resource"
    }
   },
   "ArtifactKeyAliasB27DA94F": {
    "Type": "AWS::KMS::Alias",
    "Properties": {
-    "AliasName": "alias/key/appsync-graphql-api-test-artifact-key",
+    "AliasName": "alias/key/evshostcms-artifact-key",
     "TargetKeyId": {
      "Fn::GetAtt": [
       "ArtifactKey8D84C5F0",
@@ -218,7 +218,7 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/ArtifactKey/Alias/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/ArtifactKey/Alias/Resource"
    }
   },
   "ArtifactBucket7410C9EF": {
@@ -243,7 +243,7 @@
      "Fn::Join": [
       "",
       [
-       "appsync-graphql-api-test-artifact-bucket",
+       "evshostcms-artifact-bucket",
        {
         "Ref": "AWS::AccountId"
        }
@@ -254,7 +254,7 @@
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/ArtifactBucket/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/ArtifactBucket/Resource"
    }
   },
   "ArtifactBucketPolicy4B4B7752": {
@@ -502,7 +502,7 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/ArtifactBucket/Policy/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/ArtifactBucket/Policy/Resource"
    }
   },
   "CdkBuildRoleBE66F777": {
@@ -522,7 +522,7 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/CdkBuild/Role/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/CdkBuild/Role/Resource"
    }
   },
   "CdkBuildRoleDefaultPolicyD27F0F5C": {
@@ -700,7 +700,7 @@
     ]
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/CdkBuild/Role/DefaultPolicy/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/CdkBuild/Role/DefaultPolicy/Resource"
    }
   },
   "CdkBuild455F642E": {
@@ -737,7 +737,7 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/CdkBuild/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/CdkBuild/Resource"
    }
   },
   "BackendBuildRole8503E10C": {
@@ -757,7 +757,7 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/BackendBuild/Role/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/BackendBuild/Role/Resource"
    }
   },
   "BackendBuildRoleDefaultPolicy525BFDF2": {
@@ -935,7 +935,7 @@
     ]
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/BackendBuild/Role/DefaultPolicy/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/BackendBuild/Role/DefaultPolicy/Resource"
    }
   },
   "BackendBuild8F461A5F": {
@@ -972,7 +972,7 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/BackendBuild/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/BackendBuild/Resource"
    }
   },
   "PipelineRoleD68726F7": {
@@ -992,7 +992,7 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Role/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/Pipeline/Role/Resource"
    }
   },
   "PipelineRoleDefaultPolicyC7A05455": {
@@ -1109,7 +1109,7 @@
     ]
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Role/DefaultPolicy/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/Pipeline/Role/DefaultPolicy/Resource"
    }
   },
   "PipelineC660917D": {
@@ -1140,7 +1140,7 @@
       "StageName": "Deploy_Prod"
      }
     ],
-    "Name": "appsync-graphql-api-test-pipeline",
+    "Name": "evshostcms-pipeline",
     "RoleArn": {
      "Fn::GetAtt": [
       "PipelineRoleD68726F7",
@@ -1157,13 +1157,13 @@
          "Provider": "GitHub",
          "Version": "1"
         },
-        "Configuration": {
-         "Owner": "Hardikmangalam",
-         "Repo": "appsync-graphql-api-test",
-         "Branch": "main",
-         "OAuthToken": "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",
-         "PollForSourceChanges": false
-        },
+       "Configuration": {
+            "Owner": "EAB-IT-DEV",
+            "Repo": "appsync-graphql-api",
+            "Branch": "main",
+            "OAuthToken": "{{resolve:secretsmanager:GithubAccessToken:SecretString:::}}",
+            "PollForSourceChanges": false
+           },
         "Name": "Github_Source",
         "OutputArtifacts": [
          {
@@ -1252,7 +1252,7 @@
          "Version": "1"
         },
         "Configuration": {
-         "StackName": "appsync-graphql-api-test-stack-dev",
+         "StackName": "evshostcms-stack-dev",
          "Capabilities": "CAPABILITY_NAMED_IAM",
          "RoleArn": {
           "Fn::GetAtt": [
@@ -1294,7 +1294,7 @@
          "Version": "1"
         },
         "Configuration": {
-         "StackName": "appsync-graphql-api-test-stack-staging",
+         "StackName": "evshostcms-stack-staging",
          "Capabilities": "CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND",
          "RoleArn": "arn:aws:iam::152646063031:role/CloudFormationDeploymentRole",
          "ParameterOverrides": "{\"FunctionLambdaSourceBucketNameParameter9E9E108F\":{\"Fn::GetArtifactAtt\":[\"BackendBuildOutput\",\"BucketName\"]},\"FunctionLambdaSourceObjectKeyParameter1C7AED11\":{\"Fn::GetArtifactAtt\":[\"BackendBuildOutput\",\"ObjectKey\"]}}",
@@ -1326,7 +1326,7 @@
          "Version": "1"
         },
         "Configuration": {
-         "StackName": "appsync-graphql-api-test-stack-prod",
+         "StackName": "evshostcms-stack-prod",
          "Capabilities": "CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND",
          "RoleArn": "arn:aws:iam::397743615233:role/CloudFormationDeploymentRole",
          "ParameterOverrides": "{\"FunctionLambdaSourceBucketNameParameter9E9E108F\":{\"Fn::GetArtifactAtt\":[\"BackendBuildOutput\",\"BucketName\"]},\"FunctionLambdaSourceObjectKeyParameter1C7AED11\":{\"Fn::GetArtifactAtt\":[\"BackendBuildOutput\",\"ObjectKey\"]}}",
@@ -1355,7 +1355,7 @@
     "PipelineRoleD68726F7"
    ],
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/Pipeline/Resource"
    }
   },
   "PipelineSourceGithubSourceWebhookResource3373B459": {
@@ -1414,7 +1414,7 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Build/Backend_Build/CodePipelineActionRole/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/Pipeline/Build/Backend_Build/CodePipelineActionRole/Resource"
    }
   },
   "PipelineBuildBackendBuildCodePipelineActionRoleDefaultPolicyD705B328": {
@@ -1447,7 +1447,7 @@
     ]
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Build/Backend_Build/CodePipelineActionRole/DefaultPolicy/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/Pipeline/Build/Backend_Build/CodePipelineActionRole/DefaultPolicy/Resource"
    }
   },
   "PipelineBuildCDKSynthCodePipelineActionRoleDAC58F83": {
@@ -1482,7 +1482,7 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Build/CDK_Synth/CodePipelineActionRole/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/Pipeline/Build/CDK_Synth/CodePipelineActionRole/Resource"
    }
   },
   "PipelineBuildCDKSynthCodePipelineActionRoleDefaultPolicy34E41D63": {
@@ -1515,7 +1515,7 @@
     ]
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Build/CDK_Synth/CodePipelineActionRole/DefaultPolicy/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/Pipeline/Build/CDK_Synth/CodePipelineActionRole/DefaultPolicy/Resource"
    }
   },
   "PipelineDeployDevDeployCodePipelineActionRoleE158C145": {
@@ -1550,7 +1550,7 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Deploy_Dev/Deploy/CodePipelineActionRole/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/Pipeline/Deploy_Dev/Deploy/CodePipelineActionRole/Resource"
    }
   },
   "PipelineDeployDevDeployCodePipelineActionRoleDefaultPolicy8187DB83": {
@@ -1638,7 +1638,7 @@
           {
            "Ref": "AWS::AccountId"
           },
-          ":stack/appsync-graphql-api-test-stack-dev/*"
+          ":stack/evshostcms-stack-dev/*"
          ]
         ]
        }
@@ -1654,7 +1654,7 @@
     ]
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Deploy_Dev/Deploy/CodePipelineActionRole/DefaultPolicy/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/Pipeline/Deploy_Dev/Deploy/CodePipelineActionRole/DefaultPolicy/Resource"
    }
   },
   "PipelineDeployDevDeployRoleF00EF6B7": {
@@ -1674,7 +1674,7 @@
     }
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Deploy_Dev/Deploy/Role/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/Pipeline/Deploy_Dev/Deploy/Role/Resource"
    }
   },
   "PipelineDeployDevDeployRoleDefaultPolicy6BF588EB": {
@@ -1741,7 +1741,7 @@
     ]
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Deploy_Dev/Deploy/Role/DefaultPolicy/Resource"
+    "aws:cdk:path": "evshostcms-pipeline/Pipeline/Deploy_Dev/Deploy/Role/DefaultPolicy/Resource"
    }
   },
   "CDKMetadata": {
@@ -1750,7 +1750,7 @@
     "Analytics": "v2:deflate64:H4sIAAAAAAAA/02PwQ6CMAyGn4X7qIrx4FE5eiF48Ghg1Fg2VsJAY5a9uzAwePq//m2+pAkc97CNireNZaViTSW4a19IJXK0PHQSxbi7O9VYcBf8iPRhpjhpKuw0BPDC7sGdB6mwn8qF5shYk/ys9Tx7IbnCciBdgcuoRU0Gs45rlEGxoBdUNOBy1ji1IVfhv6pdHKstXPzxDcsns/I+mH7vjZyyqagnNl6Y0QS13bySLRxgF9WWKO4G01ODkM/5BTGBC8E0AQAA"
    },
    "Metadata": {
-    "aws:cdk:path": "appsync-graphql-api-test-pipeline/CDKMetadata/Default"
+    "aws:cdk:path": "evshostcms-pipeline/CDKMetadata/Default"
    },
    "Condition": "CDKMetadataAvailable"
   }

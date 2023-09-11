@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+package-lock.json
 /.pnp
 .pnp.js
 
@@ -17,17 +18,15 @@
 .env.development.local
 .env.test.local
 .env.production.local
+.idea/workspace.xml
+.idea/*
 
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# customization for this project
-node_modules/
-cdk.out/
-.vscode/
-backend/*.js
-*.code-workspace
+yarn.lock
+.yarn
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
@@ -48,5 +47,5 @@ amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
-**.sample
+**.samplex
 #amplify-do-not-edit-end
