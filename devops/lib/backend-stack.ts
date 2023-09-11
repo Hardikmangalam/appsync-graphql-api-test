@@ -96,15 +96,15 @@ export class BackendStack extends Stack {
     lambdaRole.addToPolicy(rdsConnectPolicyStatement);
 
 
-    const chatLamda = new lambda.Function(this, "chatFunction", {
-      functionName: `chat-Function-${props.stageName}`,
-      description: `${props.appName} lambda function`,
-      runtime: lambda.Runtime.NODEJS_18_X,
-      handler: "chat.handler",
-      code: this.lambdaCode,
-      memorySize: 128,
-      role: lambdaRole,
-    });
+    // const chatLamda = new lambda.Function(this, "chatFunction", {
+    //   functionName: `chat-Function-${props.stageName}`,
+    //   description: `${props.appName} lambda function`,
+    //   runtime: lambda.Runtime.NODEJS_18_X,
+    //   handler: "chat.handler",
+    //   code: this.lambdaCode,
+    //   memorySize: 128,
+    //   role: lambdaRole,
+    // });
     const meetingsLamda = new lambda.Function(this, "MeetingsFunction", {
       functionName: `meetings-Function-${props.stageName}`,
       description: `${props.appName} lambda function`,
