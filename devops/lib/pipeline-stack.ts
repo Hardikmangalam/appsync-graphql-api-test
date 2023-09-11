@@ -4,7 +4,6 @@ import {
   StackProps,
   RemovalPolicy,
   CfnCapabilities,
-  SecretValue,
 } from "aws-cdk-lib";
 import { AccountPrincipal, PolicyStatement, Role } from "aws-cdk-lib/aws-iam";
 import { Key } from "aws-cdk-lib/aws-kms";
@@ -151,7 +150,7 @@ export class PipelineStack extends Stack {
           actions: [
             new GitHubSourceAction({
               actionName: "Github_Source",
-              oauthToken: "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",
+              oauthToken: "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",
               owner: props.githubRepoOwner,
               repo: props.githubRepoName,
               branch: "main",
