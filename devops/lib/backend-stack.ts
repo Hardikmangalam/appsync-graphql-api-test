@@ -114,49 +114,49 @@ export class BackendStack extends Stack {
       memorySize: 128,
       role: lambdaRole,
     });
-    const questionLamda = new lambda.Function(this, "questionFunction", {
-      functionName: `question-Function-${props.stageName}`,
-      description: `${props.appName} lambda function`,
-      runtime: lambda.Runtime.NODEJS_18_X,
-      handler: "question.handler",
-      code: this.lambdaCode,
-      memorySize: 128,
-      role: lambdaRole,
-    });
-    const screenLamda = new lambda.Function(this, "screenFunction", {
-      functionName: `screen-Function-${props.stageName}`,
-      description: `${props.appName} lambda function`,
-      runtime: lambda.Runtime.NODEJS_18_X,
-      handler: "screen.handler",
-      code: this.lambdaCode,
-      memorySize: 128,
-      role: lambdaRole,
-    });
-    const templateLamda = new lambda.Function(this, "templateFunction", {
-      functionName: `template-Function-${props.stageName}`,
-      description: `${props.appName} lambda function`,
-      runtime: lambda.Runtime.NODEJS_18_X,
-      handler: "template.handler",
-      code: this.lambdaCode,
-      memorySize: 128,
-      role: lambdaRole,
-    });
-    const usersLamda = new lambda.Function(this, "usersFunction", {
-      functionName: `users-Function-${props.stageName}`,
-      description: `${props.appName} lambda function`,
-      runtime: lambda.Runtime.NODEJS_18_X,
-      handler: "users.handler",
-      code: this.lambdaCode,
-      memorySize: 128,
-      role: lambdaRole,
-    });
+    // const questionLamda = new lambda.Function(this, "questionFunction", {
+    //   functionName: `question-Function-${props.stageName}`,
+    //   description: `${props.appName} lambda function`,
+    //   runtime: lambda.Runtime.NODEJS_18_X,
+    //   handler: "question.handler",
+    //   code: this.lambdaCode,
+    //   memorySize: 128,
+    //   role: lambdaRole,
+    // });
+    // const screenLamda = new lambda.Function(this, "screenFunction", {
+    //   functionName: `screen-Function-${props.stageName}`,
+    //   description: `${props.appName} lambda function`,
+    //   runtime: lambda.Runtime.NODEJS_18_X,
+    //   handler: "screen.handler",
+    //   code: this.lambdaCode,
+    //   memorySize: 128,
+    //   role: lambdaRole,
+    // });
+    // const templateLamda = new lambda.Function(this, "templateFunction", {
+    //   functionName: `template-Function-${props.stageName}`,
+    //   description: `${props.appName} lambda function`,
+    //   runtime: lambda.Runtime.NODEJS_18_X,
+    //   handler: "template.handler",
+    //   code: this.lambdaCode,
+    //   memorySize: 128,
+    //   role: lambdaRole,
+    // });
+    // const usersLamda = new lambda.Function(this, "usersFunction", {
+    //   functionName: `users-Function-${props.stageName}`,
+    //   description: `${props.appName} lambda function`,
+    //   runtime: lambda.Runtime.NODEJS_18_X,
+    //   handler: "users.handler",
+    //   code: this.lambdaCode,
+    //   memorySize: 128,
+    //   role: lambdaRole,
+    // });
 
     const lambdaDsMeeting = api.addLambdaDataSource("lambdaDatasourceMeeting", meetingsLamda);
-    const lambdaDsChat = api.addLambdaDataSource("lambdaDatasourceChat", chatLamda);
-    const lambdaDsQuestion = api.addLambdaDataSource("lambdaDatasourceQuestion", questionLamda);
-    const lambdaDsScreen = api.addLambdaDataSource("lambdaDatasourceScreen", screenLamda);
-    const lambdaDsTemplate = api.addLambdaDataSource("lambdaDatasourceTemplate", templateLamda);
-    const lambdaDsUsers = api.addLambdaDataSource("lambdaDatasourceUsers", usersLamda);
+    // const lambdaDsChat = api.addLambdaDataSource("lambdaDatasourceChat", chatLamda);
+    // const lambdaDsQuestion = api.addLambdaDataSource("lambdaDatasourceQuestion", questionLamda);
+    // const lambdaDsScreen = api.addLambdaDataSource("lambdaDatasourceScreen", screenLamda);
+    // const lambdaDsTemplate = api.addLambdaDataSource("lambdaDatasourceTemplate", templateLamda);
+    // const lambdaDsUsers = api.addLambdaDataSource("lambdaDatasourceUsers", usersLamda);
 
     lambdaDsMeeting.createResolver("checkValidMeeting", {
       typeName: "Query",
