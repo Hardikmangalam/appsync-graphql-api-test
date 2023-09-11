@@ -151,7 +151,7 @@ export class PipelineStack extends Stack {
           actions: [
             new GitHubSourceAction({
               actionName: "Github_Source",
-              oauthToken: SecretValue.secretsManager(props.githubOAuthTokenSecretName),
+              oauthToken: "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",
               owner: props.githubRepoOwner,
               repo: props.githubRepoName,
               branch: "main",
