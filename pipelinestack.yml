@@ -1,0 +1,1986 @@
+{
+ "Resources": {
+  "ArtifactKey8D84C5F0": {
+   "Type": "AWS::KMS::Key",
+   "Properties": {
+    "KeyPolicy": {
+     "Statement": [
+      {
+       "Action": "kms:*",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": "kms:Decrypt",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::397743615233:root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": "kms:Decrypt",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "arn:aws:iam::397743615233:role/CodePipelineCrossAccountRole"
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": "kms:Decrypt",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::152646063031:root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": "kms:Decrypt",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "arn:aws:iam::152646063031:role/CodePipelineCrossAccountRole"
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*",
+        "kms:Decrypt"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::397743615233:root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::397743615233:root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*",
+        "kms:Decrypt"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::152646063031:root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::152646063031:root"
+          ]
+         ]
+        }
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "arn:aws:iam::152646063031:role/CodePipelineCrossAccountRole"
+       },
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "arn:aws:iam::397743615233:role/CodePipelineCrossAccountRole"
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/ArtifactKey/Resource"
+   }
+  },
+  "ArtifactKeyAliasB27DA94F": {
+   "Type": "AWS::KMS::Alias",
+   "Properties": {
+    "AliasName": "alias/key/appsync-graphql-api-test-artifact-key",
+    "TargetKeyId": {
+     "Fn::GetAtt": [
+      "ArtifactKey8D84C5F0",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/ArtifactKey/Alias/Resource"
+   }
+  },
+  "ArtifactBucket7410C9EF": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "KMSMasterKeyID": {
+         "Fn::GetAtt": [
+          "ArtifactKey8D84C5F0",
+          "Arn"
+         ]
+        },
+        "SSEAlgorithm": "aws:kms"
+       }
+      }
+     ]
+    },
+    "BucketName": {
+     "Fn::Join": [
+      "",
+      [
+       "appsync-graphql-api-test-artifact-bucket",
+       {
+        "Ref": "AWS::AccountId"
+       }
+      ]
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/ArtifactBucket/Resource"
+   }
+  },
+  "ArtifactBucketPolicy4B4B7752": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "ArtifactBucket7410C9EF"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging",
+        "s3:Abort*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::397743615233:root"
+          ]
+         ]
+        }
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "ArtifactBucket7410C9EF",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::397743615233:root"
+          ]
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ArtifactBucket7410C9EF",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ArtifactBucket7410C9EF",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging",
+        "s3:Abort*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::152646063031:root"
+          ]
+         ]
+        }
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "ArtifactBucket7410C9EF",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::152646063031:root"
+          ]
+         ]
+        }
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ArtifactBucket7410C9EF",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ArtifactBucket7410C9EF",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "arn:aws:iam::152646063031:role/CodePipelineCrossAccountRole"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ArtifactBucket7410C9EF",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ArtifactBucket7410C9EF",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "arn:aws:iam::397743615233:role/CodePipelineCrossAccountRole"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ArtifactBucket7410C9EF",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ArtifactBucket7410C9EF",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/ArtifactBucket/Policy/Resource"
+   }
+  },
+  "CdkBuildRoleBE66F777": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codebuild.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/CdkBuild/Role/Resource"
+   }
+  },
+  "CdkBuildRoleDefaultPolicyD27F0F5C": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":logs:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":log-group:/aws/codebuild/",
+           {
+            "Ref": "CdkBuild455F642E"
+           }
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":logs:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":log-group:/aws/codebuild/",
+           {
+            "Ref": "CdkBuild455F642E"
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "codebuild:CreateReportGroup",
+        "codebuild:CreateReport",
+        "codebuild:UpdateReport",
+        "codebuild:BatchPutTestCases",
+        "codebuild:BatchPutCodeCoverages"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":codebuild:",
+          {
+           "Ref": "AWS::Region"
+          },
+          ":",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":report-group/",
+          {
+           "Ref": "CdkBuild455F642E"
+          },
+          "-*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ArtifactKey8D84C5F0",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging",
+        "s3:Abort*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ArtifactBucket7410C9EF",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ArtifactBucket7410C9EF",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ArtifactKey8D84C5F0",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "CdkBuildRoleDefaultPolicyD27F0F5C",
+    "Roles": [
+     {
+      "Ref": "CdkBuildRoleBE66F777"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/CdkBuild/Role/DefaultPolicy/Resource"
+   }
+  },
+  "CdkBuild455F642E": {
+   "Type": "AWS::CodeBuild::Project",
+   "Properties": {
+    "Artifacts": {
+     "Type": "CODEPIPELINE"
+    },
+    "Cache": {
+     "Type": "NO_CACHE"
+    },
+    "EncryptionKey": {
+     "Fn::GetAtt": [
+      "ArtifactKey8D84C5F0",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "ComputeType": "BUILD_GENERAL1_SMALL",
+     "Image": "aws/codebuild/standard:7.0",
+     "ImagePullCredentialsType": "CODEBUILD",
+     "PrivilegedMode": false,
+     "Type": "LINUX_CONTAINER"
+    },
+    "ServiceRole": {
+     "Fn::GetAtt": [
+      "CdkBuildRoleBE66F777",
+      "Arn"
+     ]
+    },
+    "Source": {
+     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"install\": {\n      \"commands\": [\n        \"cd devops\",\n        \"npm install\"\n      ]\n    },\n    \"build\": {\n      \"commands\": [\n        \"npm run build\",\n        \"npm run cdk synth\"\n      ]\n    }\n  },\n  \"artifacts\": {\n    \"base-directory\": \"devops/cdk.out\",\n    \"files\": [\n      \"*.template.json\"\n    ]\n  }\n}",
+     "Type": "CODEPIPELINE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/CdkBuild/Resource"
+   }
+  },
+  "BackendBuildRole8503E10C": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codebuild.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/BackendBuild/Role/Resource"
+   }
+  },
+  "BackendBuildRoleDefaultPolicy525BFDF2": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":logs:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":log-group:/aws/codebuild/",
+           {
+            "Ref": "BackendBuild8F461A5F"
+           }
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":logs:",
+           {
+            "Ref": "AWS::Region"
+           },
+           ":",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":log-group:/aws/codebuild/",
+           {
+            "Ref": "BackendBuild8F461A5F"
+           },
+           ":*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "codebuild:CreateReportGroup",
+        "codebuild:CreateReport",
+        "codebuild:UpdateReport",
+        "codebuild:BatchPutTestCases",
+        "codebuild:BatchPutCodeCoverages"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":codebuild:",
+          {
+           "Ref": "AWS::Region"
+          },
+          ":",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":report-group/",
+          {
+           "Ref": "BackendBuild8F461A5F"
+          },
+          "-*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ArtifactKey8D84C5F0",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging",
+        "s3:Abort*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ArtifactBucket7410C9EF",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ArtifactBucket7410C9EF",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ArtifactKey8D84C5F0",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "BackendBuildRoleDefaultPolicy525BFDF2",
+    "Roles": [
+     {
+      "Ref": "BackendBuildRole8503E10C"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/BackendBuild/Role/DefaultPolicy/Resource"
+   }
+  },
+  "BackendBuild8F461A5F": {
+   "Type": "AWS::CodeBuild::Project",
+   "Properties": {
+    "Artifacts": {
+     "Type": "CODEPIPELINE"
+    },
+    "Cache": {
+     "Type": "NO_CACHE"
+    },
+    "EncryptionKey": {
+     "Fn::GetAtt": [
+      "ArtifactKey8D84C5F0",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "ComputeType": "BUILD_GENERAL1_SMALL",
+     "Image": "aws/codebuild/standard:7.0",
+     "ImagePullCredentialsType": "CODEBUILD",
+     "PrivilegedMode": false,
+     "Type": "LINUX_CONTAINER"
+    },
+    "ServiceRole": {
+     "Fn::GetAtt": [
+      "BackendBuildRole8503E10C",
+      "Arn"
+     ]
+    },
+    "Source": {
+     "BuildSpec": "{\n  \"version\": \"0.2\",\n  \"phases\": {\n    \"install\": {\n      \"commands\": [\n        \"cd backend\",\n        \"npm install\"\n      ]\n    },\n    \"build\": {\n      \"commands\": \"npm run build\"\n    }\n  },\n  \"artifacts\": {\n    \"base-directory\": \"backend\",\n    \"files\": [\n      \"*.js\",\n      \"node_modules/**/*\"\n    ]\n  }\n}",
+     "Type": "CODEPIPELINE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/BackendBuild/Resource"
+   }
+  },
+  "PipelineRoleD68726F7": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codepipeline.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Role/Resource"
+   }
+  },
+  "PipelineRoleDefaultPolicyC7A05455": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*",
+        "s3:DeleteObject*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging",
+        "s3:Abort*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ArtifactBucket7410C9EF",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ArtifactBucket7410C9EF",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ArtifactKey8D84C5F0",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineBuildBackendBuildCodePipelineActionRole3E2110B6",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineBuildCDKSynthCodePipelineActionRoleDAC58F83",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineDeployDevDeployCodePipelineActionRoleE158C145",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Resource": "arn:aws:iam::152646063031:role/CodePipelineCrossAccountRole"
+      },
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Resource": "arn:aws:iam::397743615233:role/CodePipelineCrossAccountRole"
+      },
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Resource": "arn:aws:iam::397743615233:role/*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "PipelineRoleDefaultPolicyC7A05455",
+    "Roles": [
+     {
+      "Ref": "PipelineRoleD68726F7"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Role/DefaultPolicy/Resource"
+   }
+  },
+  "PipelineC660917D": {
+   "Type": "AWS::CodePipeline::Pipeline",
+   "Properties": {
+    "ArtifactStore": {
+     "EncryptionKey": {
+      "Id": {
+       "Fn::GetAtt": [
+        "ArtifactKey8D84C5F0",
+        "Arn"
+       ]
+      },
+      "Type": "KMS"
+     },
+     "Location": {
+      "Ref": "ArtifactBucket7410C9EF"
+     },
+     "Type": "S3"
+    },
+    "DisableInboundStageTransitions": [
+     {
+      "Reason": "To be enabled once development is ready",
+      "StageName": "Deploy_Staging"
+     },
+     {
+      "Reason": "To be enabled once staging is validated",
+      "StageName": "Deploy_Prod"
+     }
+    ],
+    "Name": "appsync-graphql-api-test-pipeline",
+    "RoleArn": {
+     "Fn::GetAtt": [
+      "PipelineRoleD68726F7",
+      "Arn"
+     ]
+    },
+    "Stages": [
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Source",
+         "Owner": "ThirdParty",
+         "Provider": "GitHub",
+         "Version": "1"
+        },
+        "Configuration": {
+         "Owner": "Hardikmangalam",
+         "Repo": "appsync-graphql-api-test",
+         "Branch": "main",
+         "OAuthToken": "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",
+         "PollForSourceChanges": false
+        },
+        "Name": "Github_Source",
+        "OutputArtifacts": [
+         {
+          "Name": "Artifact_Source_Github_Source"
+         }
+        ],
+        "RunOrder": 1
+       }
+      ],
+      "Name": "Source"
+     },
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Build",
+         "Owner": "AWS",
+         "Provider": "CodeBuild",
+         "Version": "1"
+        },
+        "Configuration": {
+         "ProjectName": {
+          "Ref": "BackendBuild8F461A5F"
+         }
+        },
+        "InputArtifacts": [
+         {
+          "Name": "Artifact_Source_Github_Source"
+         }
+        ],
+        "Name": "Backend_Build",
+        "OutputArtifacts": [
+         {
+          "Name": "BackendBuildOutput"
+         }
+        ],
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "PipelineBuildBackendBuildCodePipelineActionRole3E2110B6",
+          "Arn"
+         ]
+        },
+        "RunOrder": 1
+       },
+       {
+        "ActionTypeId": {
+         "Category": "Build",
+         "Owner": "AWS",
+         "Provider": "CodeBuild",
+         "Version": "1"
+        },
+        "Configuration": {
+         "ProjectName": {
+          "Ref": "CdkBuild455F642E"
+         }
+        },
+        "InputArtifacts": [
+         {
+          "Name": "Artifact_Source_Github_Source"
+         }
+        ],
+        "Name": "CDK_Synth",
+        "OutputArtifacts": [
+         {
+          "Name": "CdkBuildOutput"
+         }
+        ],
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "PipelineBuildCDKSynthCodePipelineActionRoleDAC58F83",
+          "Arn"
+         ]
+        },
+        "RunOrder": 1
+       }
+      ],
+      "Name": "Build"
+     },
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Deploy",
+         "Owner": "AWS",
+         "Provider": "CloudFormation",
+         "Version": "1"
+        },
+        "Configuration": {
+         "StackName": "appsync-graphql-api-test-stack-dev",
+         "Capabilities": "CAPABILITY_NAMED_IAM",
+         "RoleArn": {
+          "Fn::GetAtt": [
+           "PipelineDeployDevDeployRoleF00EF6B7",
+           "Arn"
+          ]
+         },
+         "ParameterOverrides": "{\"FunctionLambdaSourceBucketNameParameter9E9E108F\":{\"Fn::GetArtifactAtt\":[\"BackendBuildOutput\",\"BucketName\"]},\"FunctionLambdaSourceObjectKeyParameter1C7AED11\":{\"Fn::GetArtifactAtt\":[\"BackendBuildOutput\",\"ObjectKey\"]}}",
+         "ActionMode": "CREATE_UPDATE",
+         "TemplatePath": "CdkBuildOutput::devBackendStack.template.json"
+        },
+        "InputArtifacts": [
+         {
+          "Name": "BackendBuildOutput"
+         },
+         {
+          "Name": "CdkBuildOutput"
+         }
+        ],
+        "Name": "Deploy",
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "PipelineDeployDevDeployCodePipelineActionRoleE158C145",
+          "Arn"
+         ]
+        },
+        "RunOrder": 1
+       }
+      ],
+      "Name": "Deploy_Dev"
+     },
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Deploy",
+         "Owner": "AWS",
+         "Provider": "CloudFormation",
+         "Version": "1"
+        },
+        "Configuration": {
+         "StackName": "appsync-graphql-api-test-stack-staging",
+         "Capabilities": "CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND",
+         "RoleArn": "arn:aws:iam::152646063031:role/CloudFormationDeploymentRole",
+         "ParameterOverrides": "{\"FunctionLambdaSourceBucketNameParameter9E9E108F\":{\"Fn::GetArtifactAtt\":[\"BackendBuildOutput\",\"BucketName\"]},\"FunctionLambdaSourceObjectKeyParameter1C7AED11\":{\"Fn::GetArtifactAtt\":[\"BackendBuildOutput\",\"ObjectKey\"]}}",
+         "ActionMode": "CREATE_UPDATE",
+         "TemplatePath": "CdkBuildOutput::stagingBackendStack.template.json"
+        },
+        "InputArtifacts": [
+         {
+          "Name": "BackendBuildOutput"
+         },
+         {
+          "Name": "CdkBuildOutput"
+         }
+        ],
+        "Name": "Deploy",
+        "RoleArn": "arn:aws:iam::152646063031:role/CodePipelineCrossAccountRole",
+        "RunOrder": 1
+       }
+      ],
+      "Name": "Deploy_Staging"
+     },
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Deploy",
+         "Owner": "AWS",
+         "Provider": "CloudFormation",
+         "Version": "1"
+        },
+        "Configuration": {
+         "StackName": "appsync-graphql-api-test-stack-prod",
+         "Capabilities": "CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND",
+         "RoleArn": "arn:aws:iam::397743615233:role/CloudFormationDeploymentRole",
+         "ParameterOverrides": "{\"FunctionLambdaSourceBucketNameParameter9E9E108F\":{\"Fn::GetArtifactAtt\":[\"BackendBuildOutput\",\"BucketName\"]},\"FunctionLambdaSourceObjectKeyParameter1C7AED11\":{\"Fn::GetArtifactAtt\":[\"BackendBuildOutput\",\"ObjectKey\"]}}",
+         "ActionMode": "CREATE_UPDATE",
+         "TemplatePath": "CdkBuildOutput::prodBackendStack.template.json"
+        },
+        "InputArtifacts": [
+         {
+          "Name": "BackendBuildOutput"
+         },
+         {
+          "Name": "CdkBuildOutput"
+         }
+        ],
+        "Name": "Deploy",
+        "RoleArn": "arn:aws:iam::397743615233:role/CodePipelineCrossAccountRole",
+        "RunOrder": 1
+       }
+      ],
+      "Name": "Deploy_Prod"
+     }
+    ]
+   },
+   "DependsOn": [
+    "PipelineRoleDefaultPolicyC7A05455",
+    "PipelineRoleD68726F7"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Resource"
+   }
+  },
+  "PipelineSourceGithubSourceWebhookResource3373B459": {
+   "Type": "AWS::CodePipeline::Webhook",
+   "Properties": {
+    "Authentication": "GITHUB_HMAC",
+    "AuthenticationConfiguration": {
+     "SecretToken": "{{resolve:secretsmanager:GithubAccessToken:SecretString:::}}"
+    },
+    "Filters": [
+     {
+      "JsonPath": "$.ref",
+      "MatchEquals": "refs/heads/{Branch}"
+     }
+    ],
+    "RegisterWithThirdParty": true,
+    "TargetAction": "Github_Source",
+    "TargetPipeline": {
+     "Ref": "PipelineC660917D"
+    },
+    "TargetPipelineVersion": 1
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Source/Github_Source/WebhookResource"
+   }
+  },
+  "PipelineBuildBackendBuildCodePipelineActionRole3E2110B6": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Build/Backend_Build/CodePipelineActionRole/Resource"
+   }
+  },
+  "PipelineBuildBackendBuildCodePipelineActionRoleDefaultPolicyD705B328": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "codebuild:BatchGetBuilds",
+        "codebuild:StartBuild",
+        "codebuild:StopBuild"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "BackendBuild8F461A5F",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "PipelineBuildBackendBuildCodePipelineActionRoleDefaultPolicyD705B328",
+    "Roles": [
+     {
+      "Ref": "PipelineBuildBackendBuildCodePipelineActionRole3E2110B6"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Build/Backend_Build/CodePipelineActionRole/DefaultPolicy/Resource"
+   }
+  },
+  "PipelineBuildCDKSynthCodePipelineActionRoleDAC58F83": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Build/CDK_Synth/CodePipelineActionRole/Resource"
+   }
+  },
+  "PipelineBuildCDKSynthCodePipelineActionRoleDefaultPolicy34E41D63": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "codebuild:BatchGetBuilds",
+        "codebuild:StartBuild",
+        "codebuild:StopBuild"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "CdkBuild455F642E",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "PipelineBuildCDKSynthCodePipelineActionRoleDefaultPolicy34E41D63",
+    "Roles": [
+     {
+      "Ref": "PipelineBuildCDKSynthCodePipelineActionRoleDAC58F83"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Build/CDK_Synth/CodePipelineActionRole/DefaultPolicy/Resource"
+   }
+  },
+  "PipelineDeployDevDeployCodePipelineActionRoleE158C145": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": {
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":iam::",
+           {
+            "Ref": "AWS::AccountId"
+           },
+           ":root"
+          ]
+         ]
+        }
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Deploy_Dev/Deploy/CodePipelineActionRole/Resource"
+   }
+  },
+  "PipelineDeployDevDeployCodePipelineActionRoleDefaultPolicy8187DB83": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "iam:PassRole",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "PipelineDeployDevDeployRoleF00EF6B7",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ArtifactBucket7410C9EF",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ArtifactBucket7410C9EF",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ArtifactKey8D84C5F0",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": [
+        "cloudformation:CreateStack",
+        "cloudformation:DescribeStack*",
+        "cloudformation:GetStackPolicy",
+        "cloudformation:GetTemplate*",
+        "cloudformation:SetStackPolicy",
+        "cloudformation:UpdateStack",
+        "cloudformation:ValidateTemplate"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:",
+          {
+           "Ref": "AWS::Partition"
+          },
+          ":cloudformation:",
+          {
+           "Ref": "AWS::Region"
+          },
+          ":",
+          {
+           "Ref": "AWS::AccountId"
+          },
+          ":stack/appsync-graphql-api-test-stack-dev/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "PipelineDeployDevDeployCodePipelineActionRoleDefaultPolicy8187DB83",
+    "Roles": [
+     {
+      "Ref": "PipelineDeployDevDeployCodePipelineActionRoleE158C145"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Deploy_Dev/Deploy/CodePipelineActionRole/DefaultPolicy/Resource"
+   }
+  },
+  "PipelineDeployDevDeployRoleF00EF6B7": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "cloudformation.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Deploy_Dev/Deploy/Role/Resource"
+   }
+  },
+  "PipelineDeployDevDeployRoleDefaultPolicy6BF588EB": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:GetObject*",
+        "s3:GetBucket*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ArtifactBucket7410C9EF",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "ArtifactBucket7410C9EF",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "ArtifactKey8D84C5F0",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": "*",
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "PipelineDeployDevDeployRoleDefaultPolicy6BF588EB",
+    "Roles": [
+     {
+      "Ref": "PipelineDeployDevDeployRoleF00EF6B7"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/Pipeline/Deploy_Dev/Deploy/Role/DefaultPolicy/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02PwQ6CMAyGn4X7qIrx4FE5eiF48Ghg1Fg2VsJAY5a9uzAwePq//m2+pAkc97CNireNZaViTSW4a19IJXK0PHQSxbi7O9VYcBf8iPRhpjhpKuw0BPDC7sGdB6mwn8qF5shYk/ys9Tx7IbnCciBdgcuoRU0Gs45rlEGxoBdUNOBy1ji1IVfhv6pdHKstXPzxDcsns/I+mH7vjZyyqagnNl6Y0QS13bySLRxgF9WWKO4G01ODkM/5BTGBC8E0AQAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "appsync-graphql-api-test-pipeline/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-2"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

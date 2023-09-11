@@ -1,0 +1,11 @@
+{
+  "aws-cdk:enableDiffNoFail": "true",
+  "appName": "evs",
+  "githubRepoName": "appsync-graphql-api-test",
+  "githubRepoOwner": "Hardikmangalam",
+  "githubOAuthTokenSecretName": "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",
+  "region": "us-east-1",
+  "devAccountNumber": "362826031414",
+  "stagingAccountNumber": "152646063031",
+  "prodAccountNumber": "397743615233"
+}

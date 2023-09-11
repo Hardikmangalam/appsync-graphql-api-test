@@ -1,0 +1,17 @@
+.DS_Store
+
+bin/*.js
+lib/*.js
+!jest.config.js
+*.d.ts
+node_modules
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+.vscode
+
+# exclude 
+backend/*.js
+frontend/src/*.js
+frontend/.env.local
