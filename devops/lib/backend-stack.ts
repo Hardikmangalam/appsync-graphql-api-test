@@ -189,7 +189,7 @@ export class BackendStack extends Stack {
     const amplifyApp = new amplify.App(this, "amplifyApp", {
       sourceCodeProvider: new amplify.GitHubSourceCodeProvider({
         repository: "appsync-graphql-api-test",
-        oauthToken: "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",
+        oauthToken: SecretValue.secretsManager(props.githubOAuthTokenSecretName),
         owner: "Hardikmangalam",
       }),
       environmentVariables: {

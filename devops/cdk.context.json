@@ -3,7 +3,7 @@
   "appName": "evshostcms",
   "githubRepoName": "appsync-graphql-api-test",
   "githubRepoOwner": "Hardikmangalam",
-  "githubOAuthTokenSecretName": "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",
+  "githubOAuthTokenSecretName": "GithubAccessTokenHr",
   "region": "us-east-1",
   "devAccountNumber": "362826031414",
   "stagingAccountNumber": "152646063031",
