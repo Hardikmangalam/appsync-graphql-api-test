@@ -21,7 +21,6 @@ export interface BackendStackProps extends StackProps {
   readonly appName: string;
   readonly githubRepoName: string;
   readonly githubRepoOwner: string;
-  readonly githubOAuthTokenSecretName: string;
 }
 
 export class BackendStack extends Stack {
@@ -189,7 +188,7 @@ export class BackendStack extends Stack {
     const amplifyApp = new amplify.App(this, "amplifyApp", {
       sourceCodeProvider: new amplify.GitHubSourceCodeProvider({
         repository: "appsync-graphql-api-test",
-        oauthToken: SecretValue.plainText("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"),
+        oauthToken: "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",
         owner: "Hardikmangalam",
       }),
       environmentVariables: {
