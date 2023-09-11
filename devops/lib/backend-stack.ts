@@ -106,15 +106,15 @@ export class BackendStack extends Stack {
     lambdaRole.addToPolicy(rdsConnectPolicyStatement);
 
 
-    const notesLambda = new lambda.Function(this, "Function", {
-      functionName: `${props.appName}-Function-${props.stageName}`,
+    const chatLamda = new lambda.Function(this, "chatFunction", {
+      functionName: `chat-Function-${props.stageName}`,
       description: `${props.appName} lambda function`,
       runtime: lambda.Runtime.NODEJS_18_X,
-      handler: "main.handler",
+      handler: "chat.handler",
       code: this.lambdaCode,
       memorySize: 128,
+      role: lambdaRole,
     });
-
     const meetingsLamda = new lambda.Function(this, "MeetingsFunction", {
       functionName: `meetings-Function-${props.stageName}`,
       description: `${props.appName} lambda function`,
@@ -122,13 +122,52 @@ export class BackendStack extends Stack {
       handler: "meetings.handler",
       code: this.lambdaCode,
       memorySize: 128,
-      role: lambdaRole, // Specify the Lambda function's role here
-      // vpc: vpc, // Attach the Lambda to the VPC
+      role: lambdaRole,
+    });
+    const questionLamda = new lambda.Function(this, "questionFunction", {
+      functionName: `question-Function-${props.stageName}`,
+      description: `${props.appName} lambda function`,
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: "question.handler",
+      code: this.lambdaCode,
+      memorySize: 128,
+      role: lambdaRole,
+    });
+    const screenLamda = new lambda.Function(this, "screenFunction", {
+      functionName: `screen-Function-${props.stageName}`,
+      description: `${props.appName} lambda function`,
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: "screen.handler",
+      code: this.lambdaCode,
+      memorySize: 128,
+      role: lambdaRole,
+    });
+    const templateLamda = new lambda.Function(this, "templateFunction", {
+      functionName: `template-Function-${props.stageName}`,
+      description: `${props.appName} lambda function`,
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: "template.handler",
+      code: this.lambdaCode,
+      memorySize: 128,
+      role: lambdaRole,
+    });
+    const usersLamda = new lambda.Function(this, "usersFunction", {
+      functionName: `users-Function-${props.stageName}`,
+      description: `${props.appName} lambda function`,
+      runtime: lambda.Runtime.NODEJS_18_X,
+      handler: "users.handler",
+      code: this.lambdaCode,
+      memorySize: 128,
+      role: lambdaRole,
     });
 
-    // Set the new Lambda function as a data source for the AppSync API
-    const lambdaDs = api.addLambdaDataSource("lambdaDatasource", notesLambda);
     const lambdaDsMeeting = api.addLambdaDataSource("lambdaDatasourceMeeting", meetingsLamda);
+    const lambdaDsChat = api.addLambdaDataSource("lambdaDatasourceChat", chatLamda);
+    const lambdaDsQuestion = api.addLambdaDataSource("lambdaDatasourceQuestion", questionLamda);
+    const lambdaDsScreen = api.addLambdaDataSource("lambdaDatasourceScreen", screenLamda);
+    const lambdaDsTemplate = api.addLambdaDataSource("lambdaDatasourceTemplate", templateLamda);
+    const lambdaDsUsers = api.addLambdaDataSource("lambdaDatasourceUsers", usersLamda);
+
     lambdaDsMeeting.createResolver("checkValidMeeting", {
       typeName: "Query",
       fieldName: "checkValidMeeting",
@@ -142,50 +181,11 @@ export class BackendStack extends Stack {
       fieldName: "listAvailableNumber",
     })
 
-    lambdaDs.createResolver("getNoteById", {
-      typeName: "Query",
-      fieldName: "getNoteById",
-    });
 
-    lambdaDs.createResolver("listNotes", {
-      typeName: "Query",
-      fieldName: "listNotes",
-    });
 
-    lambdaDs.createResolver("createNote", {
-      typeName: "Mutation",
-      fieldName: "createNote",
-    });
 
-    lambdaDs.createResolver("deleteNote", {
-      typeName: "Mutation",
-      fieldName: "deleteNote",
-    });
 
-    lambdaDs.createResolver("updateNote", {
-      typeName: "Mutation",
-      fieldName: "updateNote",
-    });
 
-    // DynamoDB
-    const notesTable = new ddb.Table(this, "NotesTable", {
-      tableName: `${props.appName}-NotesTable-${props.stageName}`,
-      billingMode: ddb.BillingMode.PAY_PER_REQUEST,
-      partitionKey: {
-        name: "id",
-        type: ddb.AttributeType.STRING,
-      },
-    });
-    // enable the Lambda function to access the DynamoDB table (using IAM)
-    notesTable.grantFullAccess(notesLambda);
-    if (props.stageName !== "prod") {
-      notesTable.applyRemovalPolicy(RemovalPolicy.DESTROY);
-    }
-
-    // Create an environment variable that we will use in the function code
-    notesLambda.addEnvironment("NOTES_TABLE", notesTable.tableName);
-
-    // Amplify
     const amplifyApp = new amplify.App(this, "amplifyApp", {
       sourceCodeProvider: new amplify.GitHubSourceCodeProvider({
         repository: props.githubRepoName,
