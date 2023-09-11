@@ -1,9 +1,9 @@
 {
   "aws-cdk:enableDiffNoFail": "true",
-  "appName": "evs",
+  "appName": "evshostcms",
   "githubRepoName": "appsync-graphql-api-test",
   "githubRepoOwner": "Hardikmangalam",
-  "githubOAuthTokenSecretName": "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",
+  "githubOAuthTokenSecretName": "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",
   "region": "us-east-1",
   "devAccountNumber": "362826031414",
   "stagingAccountNumber": "152646063031",
